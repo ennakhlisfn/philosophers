@@ -1,8 +1,8 @@
 NAME=philo
-CFLAGS= -Wall -Wextra -Werror -g3 -fsanitize=address 
+CFLAGS= -Wall -Wextra -Werror -g3 #-fsanitize=address 
 LT = -lpthread
 
-SRC=main.c
+SRC=main.c strings.c
 OBJ=$(SRC:.c=.o)
 
 all:$(NAME)

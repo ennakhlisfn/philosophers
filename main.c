@@ -6,58 +6,54 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:20:17 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/09/07 14:13:48 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/09/16 12:51:44 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <pthread.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include "philo.h"
 
-int i;
+//void    *thread_fun(void *vargp)
+//{
+//    int *k = (int*)vargp;
+//    printf("fffthreads   %d    %d\n", i, *k);
+//    return NULL;
+//}
 
-void    *thread_fun(void *vargp)
+int error()
 {
-    int *id = (int *)vargp;
-    int k;
-    i++;
-    if (i == 3)
-    {
-        k = i;
-        sleep(1);
-        printf("threads   %d    %d\n", i, k);
-    }
-    else
-        printf("threads   %d    %d\n", i, *id);
-    return NULL;
+    write(2, "WRONG ARGUMENTS\n", 16);
+    return (2);
 }
 
-int main()
+int main(int arc, char *arv[])
 {
-    int j;
-    int k;
+//    int j;
+//    int n;
+    t_all   all;
 
-    k = 0;
-    i = 0;
-    pthread_t   *thread_id;
-
-    thread_id = (pthread_t *)malloc(5 * sizeof(pthread_t));
-    j = 0;
-    while (j < 5)
-    {
-        k = 0;
-        if (j == 3)
-            k = j;
-        pthread_create(&thread_id[j], NULL, thread_fun, &k);
-        j++;
-    }
-    sleep (3);
-    //j = 0;
-    //while (j < 5)
-    //{
-    //    pthread_join(thread_id[j], NULL);
-    //    j++;
-    //}
-    free(thread_id);
+    all = creat_all(ft_atoi(arv);
+    if (CheckArgs(arc,arv))
+        return (2);
+    
+    printf("%d\n", ft_atoi(arv[1]));
+//    n = ft_atoi(arv[1]);
+//    i = 0;
+//    pthread_t   *thread_id;
+//
+//    thread_id = (pthread_t *)malloc(n * sizeof(pthread_t));
+//    if (!thread_id)
+//        return 24;
+//    j = 0;
+//    while (j < n)
+//    {
+//        pthread_create(&thread_id[j], NULL, thread_fun, &j);
+//        j++;
+//    }
+//    j = 0;
+//    while (j < n)
+//    {
+//        pthread_join(thread_id[j], NULL);
+//        j++;
+//    }
+//    free(thread_id);
 }    
