@@ -6,54 +6,59 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:20:17 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/09/16 12:51:44 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/09/17 12:06:10 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-//void    *thread_fun(void *vargp)
-//{
-//    int *k = (int*)vargp;
-//    printf("fffthreads   %d    %d\n", i, *k);
-//    return NULL;
-//}
-
-int error()
+void    *thread_fun(void *phil)
 {
-    write(2, "WRONG ARGUMENTS\n", 16);
-    return (2);
+	t_philo *philo;
+
+	philo = (t_philo *) phil;
+	if (philo->n % 2)
+	sleep(3);
+    printf("%d statr eating\n", philo->n);
+	sleep(3);
+    printf("%d statr sleeping\n", philo->n);
+    return NULL;
 }
 
-int main(int arc, char *arv[])
-{
-//    int j;
-//    int n;
-    t_all   all;
 
-    all = creat_all(ft_atoi(arv);
+int main(int arc, char **arv)
+{
+    int 	j;
+    t_all   *all;
+	t_philo	*philo;
+	t_philo *head;
+
     if (CheckArgs(arc,arv))
         return (2);
-    
-    printf("%d\n", ft_atoi(arv[1]));
-//    n = ft_atoi(arv[1]);
-//    i = 0;
-//    pthread_t   *thread_id;
-//
-//    thread_id = (pthread_t *)malloc(n * sizeof(pthread_t));
-//    if (!thread_id)
-//        return 24;
-//    j = 0;
-//    while (j < n)
-//    {
-//        pthread_create(&thread_id[j], NULL, thread_fun, &j);
-//        j++;
-//    }
-//    j = 0;
-//    while (j < n)
-//    {
-//        pthread_join(thread_id[j], NULL);
-//        j++;
-//    }
-//    free(thread_id);
+    all = creat_all(arv);
+	philo = creat_philo();
+	head = philo;
+	pthread_mutex_init(&all->mutex, NULL);
+    j = 0;
+    while (j < all->Nphilo)
+    {
+		philo->n = j;
+        if (pthread_create(&philo->id, NULL, thread_fun, philo))
+			return (j);
+        j++;
+		if (j < all->Nphilo)
+			philo->next = creat_philo();
+		philo = philo->next;
+    }
+	philo = head;
+    j = 0;
+    while (j < all->Nphilo)
+    {
+        if (pthread_join(philo->id, NULL))
+			return (j);
+		philo = philo->next;
+        j++;
+    }
+	pthread_mutex_destroy(&all->mutex);
+	return (0);
 }    
