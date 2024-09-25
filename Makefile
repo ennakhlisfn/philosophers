@@ -2,7 +2,7 @@ NAME=philo
 CFLAGS= -Wall -Wextra -Werror -g3 -fsanitize=address 
 LT = -lpthread
 
-SRC=main.c strings.c structs.c check.c using.c
+SRC=main.c strings.c structs.c check.c using.c ft_free.c
 OBJ=$(SRC:.c=.o)
 
 all:$(NAME)

@@ -6,22 +6,40 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:20:17 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/09/17 12:06:10 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/09/25 13:14:44 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void    *thread_fun(void *phil)
+void    *routine(void *phil)
 {
 	t_philo *philo;
+	struct	timeval	start;
+	struct	timeval	curnt;
 
+	gettimeofday(&start, NULL);
 	philo = (t_philo *) phil;
-	if (philo->n % 2)
-	sleep(3);
-    printf("%d statr eating\n", philo->n);
-	sleep(3);
-    printf("%d statr sleeping\n", philo->n);
+	if (philo->n % 2 == 0)
+		usleep(philo->all->Teat);
+	gettimeofday(&curnt, NULL);
+	while (1)
+	{
+		pthread_mutex_lock(&philo->all->mutex);
+		printf("%ld %d has taken a fork\n", curnt.tv_usec - start.tv_usec, philo->n);
+		printf("%ld %d has taken a fork\n", curnt.tv_usec - start.tv_usec, philo->n);
+		printf("%ld %d is eating\n", curnt.tv_usec - start.tv_usec, philo->n);
+		pthread_mutex_unlock(&philo->all->mutex);
+		philo->Neat += 1;
+		if (philo->Neat == philo->all->Neat)
+			break;
+		usleep(philo->all->Teat);
+		gettimeofday(&curnt, NULL);
+		printf("%ld %d is sleeping\n", curnt.tv_usec - start.tv_usec, philo->n);
+		usleep(philo->all->Tsleep);
+		gettimeofday(&curnt, NULL);
+		printf("%ld %d is thinking\n", curnt.tv_usec - start.tv_usec, philo->n);
+	}
     return NULL;
 }
 
@@ -42,15 +60,18 @@ int main(int arc, char **arv)
     j = 0;
     while (j < all->Nphilo)
     {
-		philo->n = j;
-        if (pthread_create(&philo->id, NULL, thread_fun, philo))
-			return (j);
+		philo->n = j + 1;
+		philo->all = all;
+        if (pthread_create(&philo->id, NULL, routine, philo))
+			return (j);//TODO
         j++;
-		if (j < all->Nphilo)
-			philo->next = creat_philo();
+		if (j == all->Nphilo)
+			break ;
+		philo->next = creat_philo();
 		philo = philo->next;
     }
-	philo = head;
+	philo->next = head;
+	philo = philo->next;
     j = 0;
     while (j < all->Nphilo)
     {
@@ -60,5 +81,6 @@ int main(int arc, char **arv)
         j++;
     }
 	pthread_mutex_destroy(&all->mutex);
+	ft_free(philo);
 	return (0);
 }    

@@ -3,20 +3,12 @@
 
 #include <stdio.h>
 #include <pthread.h>
+#include <sys/time.h>
 #include <unistd.h>
 #include <stdlib.h>
 
-typedef struct s_philo
-{
-	pthread_t		id;
-	int				n;
-	unsigned int	l_eat;
-	struct s_philo	*next;
-}	t_philo;
-
 typedef struct s_all
 {
-	t_philo	*philo;
     pthread_t   *ids;
 	pthread_mutex_t	mutex;
     int Nphilo;
@@ -26,8 +18,20 @@ typedef struct s_all
     int Neat;
 }   t_all;
 
+typedef struct s_philo
+{
+	pthread_t		id;
+	t_all			*all;
+	int				n;
+	unsigned int	l_eat;
+	struct s_philo	*next;
+    int Neat;
+}	t_philo;
+
 t_philo	*creat_philo();
 t_all   *creat_all(char **arv);
+
+void	ft_free(t_philo	*philo);
 
 int error();
 int is_p_int(char *s);

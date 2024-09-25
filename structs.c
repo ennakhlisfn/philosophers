@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 11:46:43 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/09/17 11:07:41 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/09/25 12:47:26 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_philo	*creat_philo()
 		return (NULL);
 	philo->id = 0;
 	philo->n = 0;
+	philo->Neat = 0;
 	philo->l_eat = 0;
 	philo->next = NULL;
 	return (philo);
