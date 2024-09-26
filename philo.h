@@ -23,6 +23,7 @@ typedef struct s_philo
 	pthread_t		id;
 	t_all			*all;
 	int				n;
+	int				rank;
 	unsigned int	l_eat;
 	struct s_philo	*next;
     int Neat;
