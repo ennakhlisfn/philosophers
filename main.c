@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:20:17 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/09/26 11:53:23 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/09/28 18:52:43 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,37 +27,73 @@ void    *routine(void *phil)
 {
 	t_philo *philo;
 	struct	timeval	st;
+	struct	timeval	crnt;
 	long	start;
 	long	diff;
 
 	philo = (t_philo *) phil;
-	philo->rank = philo->n;
 	gettimeofday(&st, NULL);
 	start = st.tv_sec * 1000 + st.tv_usec / 1000;
+	if (philo->all->Neat == 0)
+		return NULL;
+	if (philo->all->Nphilo == 1)
+	{
+		printf("%ld %d died\n", philo->all->Tdie, philo->n);
+		return (NULL);
+	}
+	gettimeofday(&crnt, NULL);
+	philo->l_eat = crnt.tv_sec * 1000 + crnt.tv_usec / 1000;
+	if (philo->n % 2 == 0)
+		usleep(philo->all->Teat * 1000);
+	if (philo->all->Nphilo % 2 && philo->n == philo->all->Nphilo)
+		usleep(philo->all->Teat * 2000);
 	while (1)
 	{
-		if (philo->n % 2 == 0)
-		{
-			pthread_mutex_lock(&philo->all->mutex);
-			diff = GetDiffTime(start);
-			printf("%ld %d has taken a fork\n", diff, philo->rank);
-			printf("%ld %d has taken a fork\n", diff, philo->rank);
-			printf("%ld %d is eating\n", diff, philo->rank);
-			philo->Neat += 1;
-			pthread_mutex_unlock(&philo->all->mutex);
-			usleep(philo->all->Teat * 1000);
-			if (philo->Neat == philo->all->Neat)
-				break;
-			diff = GetDiffTime(start);
-			printf("%ld %d is sleeping\n", diff, philo->rank);
-			usleep(philo->all->Tsleep * 1000);
-			diff = GetDiffTime(start);
-			printf("%ld %d is thinking\n", diff, philo->rank);
-		}
-		philo->n = philo->next->n;
-		if (philo->all->Nphilo % 2 == 0 && philo->n != philo->all->Nphilo)
-			usleep(philo->all->Teat * 1000);
+		while (philo->left->fork)
+			usleep(1);
+		while (philo->right->fork)
+			usleep(1);
+		diff = GetDiffTime(start);
+		if (philo->all->Nphilo == 0)
+			return (NULL);
+		if (CheckDie(philo, diff))
+			return (NULL);
+		gettimeofday(&crnt, NULL);
+		philo->l_eat = crnt.tv_sec * 1000 + crnt.tv_usec / 1000;
+		pthread_mutex_lock(&philo->all->mutex);
+		philo->left->fork = 0;
+		philo->left->fork = 0;
+		philo->fork = 1;
+		printf("%ld %d has taken a fork\n", diff, philo->n);
+		printf("%ld %d has taken a fork\n", diff, philo->n);
+		printf("%ld %d is eating\n", diff, philo->n);
+		philo->Neat += 1;
+		pthread_mutex_unlock(&philo->all->mutex);
 		usleep(philo->all->Teat * 1000);
+		pthread_mutex_lock(&philo->all->mutex);
+		philo->left->fork = 1;
+		philo->left->fork = 1;
+		philo->fork = 0;
+		pthread_mutex_unlock(&philo->all->mutex);
+		diff = GetDiffTime(start);
+		if (philo->Neat == philo->all->Neat)
+			return (NULL);
+		if (philo->all->Nphilo == 0)
+			return (NULL);
+		pthread_mutex_lock(&philo->all->mutex);
+		printf("%ld %d is sleeping\n", diff, philo->n);
+		pthread_mutex_unlock(&philo->all->mutex);
+		usleep(philo->all->Tsleep * 1000);
+		if (philo->all->Nphilo == 0)
+			return (NULL);
+		diff = GetDiffTime(start);
+		printf("%ld %d is thinking\n", diff, philo->n);
+		while (philo->l_eat > philo->left->l_eat || philo->l_eat > philo->right->l_eat)
+		{
+			if (philo->left->Neat == philo->all->Neat || philo->right->Neat == philo->all->Neat)
+				break;
+			usleep(1);
+		}
 	}
     return NULL;
 }
@@ -67,39 +103,46 @@ int main(int arc, char **arv)
 {
     int 	j;
     t_all   *all;
-	t_philo	*philo;
-	t_philo *head;
+	t_philo	**philo;
 
     if (CheckArgs(arc,arv))
         return (2);
     all = creat_all(arv);
-	philo = creat_philo();
-	head = philo;
+	philo = (t_philo **)malloc(all->Nphilo * sizeof(t_philo *));
 	pthread_mutex_init(&all->mutex, NULL);
     j = 0;
     while (j < all->Nphilo)
     {
-		philo->n = j + 1;
-		philo->all = all;
-        if (pthread_create(&philo->id, NULL, routine, philo))
-			return (j);//TODO
+		philo[j] = creat_philo();
+		philo[j]->fork = 0;
+		philo[j]->n = j + 1;
+		philo[j]->all = all;
+		j++;
+	}
+	j = 0;
+    while (j < all->Nphilo)
+    {
+		if (j)
+			philo[j]->right = philo[j - 1];
+		else
+			philo[j]->right = philo[all->Nphilo - 1];
+		if (j < all->Nphilo - 1)
+			philo[j]->left = philo[j + 1];
+		else
+			philo[j]->left = philo[0];
+        if (pthread_create(&philo[j]->id, NULL, routine, philo[j]))
+			return (2);//TODO
         j++;
-		if (j == all->Nphilo)
-			break ;
-		philo->next = creat_philo();
-		philo = philo->next;
     }
-	philo->next = head;
-	philo = philo->next;
     j = 0;
     while (j < all->Nphilo)
     {
-        if (pthread_join(philo->id, NULL))
+        if (pthread_join(philo[j]->id, NULL))
 			return (j);
-		philo = philo->next;
         j++;
     }
 	pthread_mutex_destroy(&all->mutex);
-	ft_free(philo);
+	free(philo);
+	free(all);
 	return (0);
 }    

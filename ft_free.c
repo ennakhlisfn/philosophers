@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/25 09:25:57 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/09/25 11:09:07 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:55:21 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_free(t_philo	*philo)
 	while (n)
 	{
 		prev = philo;
-		philo = philo->next;
+//		philo = philo->next;
 		free(prev);
 		n--;
 	}

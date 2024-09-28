@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 11:46:43 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/09/25 12:47:26 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/09/28 18:54:35 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ t_philo	*creat_philo()
 	philo->id = 0;
 	philo->n = 0;
 	philo->Neat = 0;
+	philo->fork = 0;
 	philo->l_eat = 0;
-	philo->next = NULL;
 	return (philo);
 }
 	
@@ -40,6 +40,9 @@ t_all   *creat_all(char **arv)
     all->Tdie = ft_atoi(arv[2]);
     all->Teat = ft_atoi(arv[3]);
     all->Tsleep = ft_atoi(arv[4]);
-    all->Neat = ft_atoi(arv[5]);
+	if (arv[5])
+		all->Neat = ft_atoi(arv[5]);
+	else
+		all->Neat = -1;
     return (all);
 }

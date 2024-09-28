@@ -6,11 +6,24 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:34:18 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/09/16 10:36:06 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/09/28 14:19:53 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	CheckDie(t_philo *philo, long diff)
+{
+	if (GetDiffTime(philo->l_eat) > philo->all->Tdie)
+	{
+		pthread_mutex_lock(&philo->all->mutex);
+		philo->all->Nphilo = 0;
+		pthread_mutex_unlock(&philo->all->mutex);
+		printf("%ld %d died\n", diff, philo->n);
+		return (1);
+	}
+	return (0);
+}
 
 int is_p_int(char *s)
 {
