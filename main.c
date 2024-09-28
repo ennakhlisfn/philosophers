@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:20:17 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/09/28 18:52:43 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/09/28 20:27:50 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,7 @@ void    *routine(void *phil)
 		usleep(philo->all->Teat * 2000);
 	while (1)
 	{
-		while (philo->left->fork)
-			usleep(1);
-		while (philo->right->fork)
+		while (philo->left->fork || philo->right->fork)
 			usleep(1);
 		diff = GetDiffTime(start);
 		if (philo->all->Nphilo == 0)
@@ -84,16 +82,18 @@ void    *routine(void *phil)
 		printf("%ld %d is sleeping\n", diff, philo->n);
 		pthread_mutex_unlock(&philo->all->mutex);
 		usleep(philo->all->Tsleep * 1000);
+		diff = GetDiffTime(start);
 		if (philo->all->Nphilo == 0)
 			return (NULL);
-		diff = GetDiffTime(start);
 		printf("%ld %d is thinking\n", diff, philo->n);
-		while (philo->l_eat > philo->left->l_eat || philo->l_eat > philo->right->l_eat)
-		{
-			if (philo->left->Neat == philo->all->Neat || philo->right->Neat == philo->all->Neat)
-				break;
-			usleep(1);
-		}
+		if (philo->all->Nphilo % 2 && philo->n % 2)
+			usleep(philo->all->Teat * 1000);
+		//while (philo->l_eat > philo->left->l_eat || philo->l_eat > philo->right->l_eat)
+		//{
+		//	if (philo->left->Neat == philo->all->Neat || philo->right->Neat == philo->all->Neat)
+		//		break;
+		//	usleep(1);
+		//}
 	}
     return NULL;
 }
