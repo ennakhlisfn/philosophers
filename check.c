@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:34:18 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/09/28 20:21:08 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/09/29 18:52:56 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,20 @@ int	CheckDie(t_philo *philo, long diff)
 {
 	if (GetDiffTime(philo->l_eat) > philo->all->Tdie)
 	{
-		pthread_mutex_lock(&philo->all->mutex);
-		pthread_mutex_unlock(&philo->all->mutex);
-		if (philo->all->Nphilo == 0)
-			return (1);
-		philo->all->Nphilo = 0;
-		printf("%ld %d died\n", diff, philo->n);
+		if (philo->all->Nphilo && philo->all->die)
+		{
+			philo->all->die = 0;
+			philo->all->Nphilo = 0;
+			pthread_mutex_lock(&philo->all->mutex);
+			usleep(1000);
+			philo->left->fork = 1;
+			philo->left->fork = 1;
+			philo->fork = 0;
+			printf("%ld %d died\n", diff, philo->n);
+			pthread_mutex_unlock(&philo->all->mutex);
+		}
+		else
+			return (0);
 		return (1);
 	}
 	return (0);

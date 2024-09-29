@@ -16,6 +16,7 @@ typedef struct s_all
     long Teat;
     long Tsleep;
     int Neat;
+	int		die;
 }   t_all;
 
 typedef struct s_philo
