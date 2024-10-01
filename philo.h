@@ -1,47 +1,66 @@
-#ifndef PHILO_H
-#define PHILO_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/01 13:18:05 by sennakhl          #+#    #+#             */
+/*   Updated: 2024/10/01 17:31:13 by sennakhl         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <stdio.h>
-#include <pthread.h>
-#include <sys/time.h>
-#include <unistd.h>
-#include <stdlib.h>
+#ifndef PHILO_H
+# define PHILO_H
+
+# include <pthread.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/time.h>
+# include <unistd.h>
 
 typedef struct s_all
 {
-    pthread_t   *ids;
+	pthread_t		*ids;
 	pthread_mutex_t	mutex;
-    int Nphilo;
-    long Tdie;
-    long Teat;
-    long Tsleep;
-    int Neat;
-	int		die;
-}   t_all;
+	long			t_die;
+	long			t_eat;
+	long			t_sleep;
+	long			n_philo;
+	long			n_eat;
+	int				die;
+}					t_all;
 
 typedef struct s_philo
 {
 	pthread_t		id;
 	t_all			*all;
 	int				n;
-	long	l_eat;
-	int		fork;
+	long			l_eat;
+	int				fork;
 	struct s_philo	*left;
 	struct s_philo	*right;
-    int Neat;
-}	t_philo;
+	int				n_eat;
+}					t_philo;
 
-t_philo	*creat_philo();
-t_all   *creat_all(char **arv);
+t_philo				*creat_philo(void);
+t_all				*creat_all(char **arv);
 
-void	ft_free(t_philo	*philo);
+void				ft_eating(t_philo *philo, long diff);
+void				init_philo(t_all *all, t_philo **philo);
 
-long GetDiffTime(long start);
+long				get_diff_time(long start);
+long				get_diff_time(long start);
+long				ft_atoi(char *str);
 
-int	CheckDie(t_philo *philo, long diff);
-int error();
-int is_p_int(char *s);
-int ft_atoi(char *str);
-int CheckArgs(int arc, char **arv);
+int					check_neat_nphilo(t_philo *philo);
+int					main_routine(t_philo *philo, long start);
+int					ft_last(t_philo *philo, long start);
+int					ft_even(t_philo *philo, long start);
+int					ft_odd(t_philo *philo, long start);
+int					check_die(t_philo *philo, long diff);
+int					error(void);
+int					is_p_int(char *s);
+int					check_args(int arc, char **arv);
 
 #endif
