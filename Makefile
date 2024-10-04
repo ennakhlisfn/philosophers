@@ -1,5 +1,5 @@
 NAME=philo
-CFLAGS= -Wall -Wextra -Werror# -g3 -fsanitize=address 
+CFLAGS= -Wall -Wextra -Werror -g3 -fsanitize=address 
 LT = -lpthread
 
 SRC=main.c strings.c structs.c check.c using.c

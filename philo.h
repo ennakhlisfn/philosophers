@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:18:05 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/10/01 17:31:13 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/10/04 15:51:49 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_all
 	long			t_sleep;
 	long			n_philo;
 	long			n_eat;
+	long			forks;
 	int				die;
 }					t_all;
 
@@ -37,16 +38,13 @@ typedef struct s_philo
 	t_all			*all;
 	int				n;
 	long			l_eat;
-	int				fork;
-	struct s_philo	*left;
-	struct s_philo	*right;
 	int				n_eat;
 }					t_philo;
 
 t_philo				*creat_philo(void);
 t_all				*creat_all(char **arv);
 
-void				ft_eating(t_philo *philo, long diff);
+void				ft_eating(t_philo *philo, long start);
 void				init_philo(t_all *all, t_philo **philo);
 
 long				get_diff_time(long start);

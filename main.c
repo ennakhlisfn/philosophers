@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:20:17 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/10/01 13:27:48 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/10/04 16:07:39 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ int	main_routine(t_philo *philo, long start)
 {
 	long	diff;
 
-	while (philo->left->fork || philo->right->fork)
-		usleep(1000);
+	while (philo->all->forks == philo->all->n_philo / 2)
+		usleep(1);
 	diff = get_diff_time(start);
 	if (philo->all->die && check_die(philo, diff))
 		return (1);
-	ft_eating(philo, diff);
+	ft_eating(philo, start);
+	diff = get_diff_time(start);
 	if (philo->n_eat == philo->all->n_eat)
 		return (1);
-	diff = get_diff_time(start);
 	if (philo->all->die == 0)
 		return (1);
 	if (philo->all->die)
@@ -78,14 +78,6 @@ int	create_thread(t_all *all, t_philo **philo)
 	j = 0;
 	while (j < all->n_philo)
 	{
-		if (j)
-			philo[j]->right = philo[j - 1];
-		else
-			philo[j]->right = philo[all->n_philo - 1];
-		if (j < all->n_philo - 1)
-			philo[j]->left = philo[j + 1];
-		else
-			philo[j]->left = philo[0];
 		if (pthread_create(&philo[j]->id, NULL, routine, philo[j]))
 		{
 			free(philo);
@@ -119,8 +111,11 @@ int	main(int arc, char **arv)
 		j++;
 	}
 	pthread_mutex_destroy(&all->mutex);
+	usleep(all->t_eat * 2000);
+	j = 0;
+	while (j < all->n_philo)
+		free(philo[j++]);
 	free(philo);
-	usleep(10000);
 	free(all);
 	return (0);
 }

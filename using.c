@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:30:22 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/10/01 13:46:01 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/10/04 16:04:16 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ long	get_diff_time(long start)
 	return (diff);
 }
 
-void	ft_eating(t_philo *philo, long diff)
+void	ft_eating(t_philo *philo, long start)
 {
 	struct timeval	crnt;
+	long	diff;
 
 	gettimeofday(&crnt, NULL);
+	diff = get_diff_time(start);
 	philo->l_eat = crnt.tv_sec * 1000 + crnt.tv_usec / 1000;
 	pthread_mutex_lock(&philo->all->mutex);
-	philo->left->fork = 0;
-	philo->left->fork = 0;
-	philo->fork = 1;
+	philo->all->forks++;
 	pthread_mutex_unlock(&philo->all->mutex);
 	if (philo->all->die)
 	{
@@ -42,11 +42,7 @@ void	ft_eating(t_philo *philo, long diff)
 	}
 	philo->n_eat += 1;
 	usleep(philo->all->t_eat * 1000);
-	pthread_mutex_lock(&philo->all->mutex);
-	philo->left->fork = 1;
-	philo->left->fork = 1;
-	philo->fork = 0;
-	pthread_mutex_unlock(&philo->all->mutex);
+	philo->all->forks--;
 }
 
 int	ft_last(t_philo *philo, long start)
