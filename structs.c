@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 11:46:43 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/10/04 14:36:48 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/10/01 13:27:48 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_philo	*creat_philo(void)
 	philo->id = 0;
 	philo->n = 0;
 	philo->n_eat = 0;
+	philo->fork = 0;
 	philo->l_eat = 0;
 	return (philo);
 }
@@ -37,7 +38,6 @@ t_all	*creat_all(char **arv)
 	all->t_die = ft_atoi(arv[2]);
 	all->t_eat = ft_atoi(arv[3]);
 	all->t_sleep = ft_atoi(arv[4]);
-	all->forks = 0;
 	if (arv[5])
 		all->n_eat = ft_atoi(arv[5]);
 	else
@@ -53,6 +53,7 @@ void	init_philo(t_all *all, t_philo **philo)
 	while (j < all->n_philo)
 	{
 		philo[j] = creat_philo();
+		philo[j]->fork = 0;
 		philo[j]->n = j + 1;
 		philo[j]->all = all;
 		j++;

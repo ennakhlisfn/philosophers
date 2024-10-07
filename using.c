@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:30:22 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/10/04 16:04:16 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/10/07 13:39:37 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void	ft_eating(t_philo *philo, long start)
 	long	diff;
 
 	gettimeofday(&crnt, NULL);
-	diff = get_diff_time(start);
 	philo->l_eat = crnt.tv_sec * 1000 + crnt.tv_usec / 1000;
-	pthread_mutex_lock(&philo->all->mutex);
-	philo->all->forks++;
-	pthread_mutex_unlock(&philo->all->mutex);
+	philo->left->fork = 0;
+	philo->left->fork = 0;
+	philo->fork = 1;
+	diff = get_diff_time(start);
 	if (philo->all->die)
 	{
 		printf("%ld %d has taken a fork\n", diff, philo->n);
@@ -41,8 +41,6 @@ void	ft_eating(t_philo *philo, long start)
 		printf("%ld %d is eating\n", diff, philo->n);
 	}
 	philo->n_eat += 1;
-	usleep(philo->all->t_eat * 1000);
-	philo->all->forks--;
 }
 
 int	ft_last(t_philo *philo, long start)
