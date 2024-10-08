@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 09:30:22 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/10/08 15:13:58 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/10/08 16:05:52 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_eating(t_philo *philo, long start)
 		printf("%ld %d is eating\n", diff, philo->n);
 	}
 	philo->n_eat += 1;
-	pthread_mutex_lock(&philo->all->mutex);
+	pthread_mutex_unlock(&philo->all->mutex);
 	usleep(philo->all->t_eat * 1000);
 	philo->left->fork = 1;
 	philo->fork = 0;

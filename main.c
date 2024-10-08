@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/07 10:20:17 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/10/08 15:12:29 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/10/08 16:26:11 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ int	main_routine(t_philo *philo, long start)
 	usleep(philo->all->t_sleep * 1000);
 	if (philo->all->n_philo == 0)
 		return (1);
-	diff = get_diff_time(start);
-	if (philo->all->die)
-		printf("%ld %d is thinking\n", diff, philo->n);
+	thinking(philo, start);
 	return (0);
 }
 

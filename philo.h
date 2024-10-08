@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:18:05 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/10/08 13:27:31 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/10/08 16:26:12 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_philo
 t_philo				*creat_philo(void);
 t_all				*creat_all(char **arv);
 
+void				thinking(t_philo *philo, long start);
 void				ft_eating(t_philo *philo, long start);
 void				init_philo(t_all *all, t_philo **philo);
 
