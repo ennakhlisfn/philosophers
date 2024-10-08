@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:34:18 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/10/07 11:04:33 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:51:10 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,12 @@ int	check_die(t_philo *philo, long diff)
 			philo->all->die = 0;
 			philo->all->n_philo = 0;
 			pthread_mutex_lock(&philo->all->mutex);
-			usleep(1000);
-			philo->left->fork = 1;
 			philo->left->fork = 1;
 			philo->fork = 0;
 			printf("%ld %d died\n", diff, philo->n);
 			pthread_mutex_unlock(&philo->all->mutex);
 		}
-		else
-			return (0);
-		return (1);
+		return (0);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:18:05 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/10/07 13:39:37 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/10/08 13:27:31 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_all
 	long			t_sleep;
 	long			n_philo;
 	long			n_eat;
+	long			start;
 	int				die;
 }					t_all;
 

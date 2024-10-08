@@ -6,7 +6,7 @@
 /*   By: sennakhl <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 11:46:43 by sennakhl          #+#    #+#             */
-/*   Updated: 2024/10/01 13:27:48 by sennakhl         ###   ########.fr       */
+/*   Updated: 2024/10/08 15:13:59 by sennakhl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ t_philo	*creat_philo(void)
 
 t_all	*creat_all(char **arv)
 {
-	t_all	*all;
+	t_all			*all;
+	struct timeval	st;
 
 	all = (t_all *)malloc(sizeof(t_all));
 	if (!all)
@@ -38,6 +39,9 @@ t_all	*creat_all(char **arv)
 	all->t_die = ft_atoi(arv[2]);
 	all->t_eat = ft_atoi(arv[3]);
 	all->t_sleep = ft_atoi(arv[4]);
+	all->die = 1;
+	gettimeofday(&st, NULL);
+	all->start = st.tv_sec * 1000 + st.tv_usec / 1000;
 	if (arv[5])
 		all->n_eat = ft_atoi(arv[5]);
 	else
